@@ -1,0 +1,36 @@
+#! /usr/bin/env bash
+
+TVHEADEND_HOME="${TVHEADEND_HOME:-/home/hts}"
+
+now="$(date +%s)"
+start_min="$((now + threshold))"
+stop_max="$((now - threshold))"
+logs_dir="$TVHEADEND_HOME"/.hts/tvheadend/dvr/log
+
+[ -d "$logs_dir" ] || {
+    echo >&2 "error: no such directory: $logs_dir"
+    exit 1
+}
+
+recording=n
+for f in "$logs_dir"/*; do
+    echo >&2 "check recording log: $f"
+    {
+        read start
+        read stop
+    } < <(jshon -e start -u -p -e stop -u < "$f")
+
+    if \
+        [ -n "$start" ] && [ -n "$stop" ] && \
+        [ "$start" -lt "$start_min" ] && [ "$stop" -gt "$stop_max" ]
+    then
+        recording=y
+        break
+    fi
+done
+
+if [ "$recording" = y ]; then
+    exit 1
+else
+    systemctl restart tvheadend
+fi
