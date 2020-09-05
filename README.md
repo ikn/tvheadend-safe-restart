@@ -2,11 +2,11 @@ tvheadend-safe-restart 1.0.
 
 Restart [Tvheadend](https://tvheadend.org/) unless it's recording.
 
-http://ikn.org.uk/tvheadend-safe-restart
+http://ikn.org.uk/tool/tvheadend-safe-restart
 
 # License
 
-Distributed under the terms of the 
+Distributed under the terms of the
 [BSD 3-Clause license](https://opensource.org/licenses/BSD-3-Clause).
 
 # Dependencies
